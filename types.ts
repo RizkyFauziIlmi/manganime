@@ -48,6 +48,20 @@ export type ErrorType = {
   message: Object;
 };
 
+export type AnimePopularData = {
+  currentPage: number;
+  hasNextPage: boolean;
+  results: PopularAnime[];
+};
+
+export type PopularAnime = {
+  id: string;
+  title: string;
+  releaseDate: string;
+  image: string;
+  url: string;
+};
+
 type ServersAvailable = {
   name: string;
   url: string;

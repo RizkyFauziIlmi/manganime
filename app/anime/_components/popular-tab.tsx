@@ -1,15 +1,15 @@
-import { useTopAiringAnimes } from "@/hooks/use-anime-fetch";
+import { usePopularAnime } from "@/hooks/use-anime-fetch";
 import React from "react";
-import { ExploreCard } from "./explore-card";
 import { ExploreSkeleton } from "./explore-skeleton";
+import { ExploreCard } from "./explore-card";
 
-interface TopAiringTabProps {
+interface PopularTabProps {
   page: number;
   setHasNextPage: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export const TopAiringTab = ({ page, setHasNextPage }: TopAiringTabProps) => {
-  const { data, isLoading } = useTopAiringAnimes(page);
+export const PopularTab = ({ page, setHasNextPage }: PopularTabProps) => {
+  const { data, isLoading } = usePopularAnime(page);
 
   React.useEffect(() => {
     if (data?.hasNextPage) {
@@ -27,7 +27,7 @@ export const TopAiringTab = ({ page, setHasNextPage }: TopAiringTabProps) => {
           id={anime.id}
           image={anime.image}
           title={anime.title}
-          genres={anime.genres}
+          releaseDate={anime.releaseDate}
           type="anime"
         />
       ))}
