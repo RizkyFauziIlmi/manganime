@@ -1,6 +1,7 @@
 import { serviceUrl } from "@/constants/url";
 import {
   AnimeInfoData,
+  AnimePopularData,
   AnimeRecentEpisodesData,
   AnimeSearchData,
   AnimeServersAvailableData,
@@ -25,7 +26,7 @@ export const animeService = {
 
     const data = await response.json();
 
-    data.currentPage = Number(data.currentPage);
+    data.currentPage = parseInt(data.currentPage);
 
     return data as AnimeSearchData;
   },
@@ -50,7 +51,7 @@ export const animeService = {
 
     const data = await response.json();
 
-    data.currentPage = Number(data.currentPage);
+    data.currentPage = parseInt(data.currentPage);
 
     return data as AnimeRecentEpisodesData;
   },
@@ -69,7 +70,7 @@ export const animeService = {
 
     const data = await response.json();
 
-    data.currentPage = Number(data.currentPage);
+    data.currentPage = parseInt(data.currentPage);
 
     return data as AnimeTopAiringData;
   },
@@ -126,5 +127,24 @@ export const animeService = {
     const data = await response.json();
 
     return data as AnimeServersAvailableData;
+  },
+  getPopularAnime: async (page?: number) => {
+    // eg: popular?page=1
+    const url =
+      baseUrl + `/popular` + qs.stringify({ page }, { addQueryPrefix: true });
+
+    const response = await fetch(url);
+
+    if (response.status === 404) {
+      throw new Error("Servers not found");
+    } else if (response.status === 500) {
+      throw new Error("Internal server error");
+    }
+
+    const data = await response.json();
+
+    data.currentPage = parseInt(data.currentPage);
+
+    return data as AnimePopularData;
   },
 };

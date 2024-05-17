@@ -29,7 +29,7 @@ export const MainHeader = () => {
   }, [resetData, isSecondRoutePath]);
 
   return (
-    <header className="border-[1px] bg-background border-x-primary/20 border-t-primary/30 w-11/12 md:w-2/3 mx-auto px-3 py-1 md:py-3 md:px-6 rounded-full mt-4 flex justify-between items-center">
+    <header className="border-[1px] bg-background border-x-primary/20 border-t-primary/30 w-11/12 md:w-2/3 mx-auto px-2 py-1 md:py-2 md:px-4 rounded-full mt-4 flex justify-between items-center">
       <div className="md:flex items-center gap-3 hidden">
         <TitleHeader title="Manganime" link="/" />
         <ItemsHeader />
@@ -37,7 +37,7 @@ export const MainHeader = () => {
       <div className="md:hidden block">
         <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
           <SheetTrigger asChild>
-            <Button size="icon" variant="secondary">
+            <Button size="icon" variant="outline" className="rounded-full">
               <HamburgerMenuIcon className="w-4 h-4" />
             </Button>
           </SheetTrigger>

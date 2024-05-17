@@ -7,6 +7,7 @@ import {
   CaretRightIcon,
   CountdownTimerIcon,
   MagnifyingGlassIcon,
+  RocketIcon,
   StarFilledIcon,
 } from "@radix-ui/react-icons";
 import {
@@ -26,10 +27,9 @@ import React from "react";
 import { TopAiringTab } from "./top-airing-tab";
 import { RecentEpisodesTab } from "./recent-episodes-tab";
 import { Button } from "@/components/ui/button";
-import { useSeachAnime } from "@/hooks/use-anime-fetch";
 import { useDebounceValue } from "usehooks-ts";
-import { ExploreSkeleton } from "./explore-skeleton";
-import { ExploreCard } from "./explore-card";
+import { SearchTab } from "./search-tab";
+import { PopularTab } from "./popular-tab";
 
 export const AnimeExplore = () => {
   const [input, setInput] = React.useState("");
@@ -38,9 +38,8 @@ export const AnimeExplore = () => {
   const [hasNextPage, setHasNextPage] = React.useState(true);
   const [debouncedValue, setValue] = useDebounceValue(input, 500);
   const [currentTab, setCurrentTab] = React.useState<
-    "top-airing" | "recent-episodes" | "search"
+    "top-airing" | "recent-episodes" | "popular" | "search"
   >("top-airing");
-  const { data, isLoading } = useSeachAnime(debouncedValue, page);
 
   return (
     <div>
@@ -58,7 +57,9 @@ export const AnimeExplore = () => {
           className="w-screen"
           value={currentTab}
           onValueChange={(e) => {
-            setCurrentTab(e as "top-airing" | "recent-episodes" | "search");
+            setCurrentTab(
+              e as "top-airing" | "recent-episodes" | "popular" | "search",
+            );
             setPage(1);
             setHasNextPage(true);
             setInput("");
@@ -69,23 +70,25 @@ export const AnimeExplore = () => {
             <div className="flex flex-col md:flex-row gap-2 md:gap-0 items-center w-full justify-around">
               <div>
                 <div className="flex gap-2">
-                  <TooltipProvider>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <Button
-                          size="icon"
-                          variant="secondary"
-                          onClick={() => setPage(page === 1 ? 1 : page - 1)}
-                          disabled={page === 1}
-                        >
-                          <CaretLeftIcon className="w-4 h-4" />
-                        </Button>
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p>Previous Page ({page})</p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
+                  <div className="hidden md:block">
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Button
+                            size="icon"
+                            variant="secondary"
+                            onClick={() => setPage(page === 1 ? 1 : page - 1)}
+                            disabled={page === 1}
+                          >
+                            <CaretLeftIcon className="w-4 h-4" />
+                          </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>Previous Page ({page})</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                  </div>
                   <TabsList>
                     <TabsTrigger value="top-airing">
                       <StarFilledIcon className="w-4 h-4 mr-2" /> Top Airing
@@ -94,24 +97,30 @@ export const AnimeExplore = () => {
                       <CountdownTimerIcon className="w-4 h-4 mr-2" /> Recent
                       Episodes
                     </TabsTrigger>
+                    <TabsTrigger value="popular">
+                      <RocketIcon className="w-4 h-4 mr-2" />
+                      Popular
+                    </TabsTrigger>
                   </TabsList>
-                  <TooltipProvider>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <Button
-                          size="icon"
-                          variant="secondary"
-                          onClick={() => setPage(page + 1)}
-                          disabled={!hasNextPage}
-                        >
-                          <CaretRightIcon className="w-4 h-4" />
-                        </Button>
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p>Next Page ({page})</p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
+                  <div className="hidden md:block">
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Button
+                            size="icon"
+                            variant="secondary"
+                            onClick={() => setPage(page + 1)}
+                            disabled={!hasNextPage}
+                          >
+                            <CaretRightIcon className="w-4 h-4" />
+                          </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>Next Page ({page})</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                  </div>
                 </div>
                 {currentTab === "recent-episodes" && (
                   <Select
@@ -181,27 +190,67 @@ export const AnimeExplore = () => {
                   </Select>
                 )}
               </div>
-              <div className="relative">
-                <MagnifyingGlassIcon className="w-5 h-5 absolute mt-2 ml-2" />
-                <Input
-                  className="pl-8"
-                  value={input}
-                  onChange={(e) => {
-                    const value = e.target.value;
+              <div className="flex gap-1">
+                <div className="block md:hidden">
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Button
+                          size="icon"
+                          variant="secondary"
+                          onClick={() => setPage(page === 1 ? 1 : page - 1)}
+                          disabled={page === 1}
+                        >
+                          <CaretLeftIcon className="w-4 h-4" />
+                        </Button>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>Previous Page ({page})</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                </div>
+                <div className="relative">
+                  <MagnifyingGlassIcon className="w-5 h-5 absolute mt-2 ml-2" />
+                  <Input
+                    className="pl-8"
+                    value={input}
+                    onChange={(e) => {
+                      const value = e.target.value;
 
-                    if (value !== "") {
-                      setCurrentTab("search");
-                    } else {
-                      setPage(1);
-                      setHasNextPage(true);
-                      setType(1);
-                      setCurrentTab("top-airing");
-                    }
+                      if (value !== "") {
+                        setCurrentTab("search");
+                      } else {
+                        setPage(1);
+                        setHasNextPage(true);
+                        setType(1);
+                        setCurrentTab("top-airing");
+                      }
 
-                    setInput(e.target.value);
-                  }}
-                  placeholder="Search for anime"
-                />
+                      setInput(e.target.value);
+                    }}
+                    placeholder="Search for anime"
+                  />
+                </div>
+                <div className="block md:hidden">
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Button
+                          size="icon"
+                          variant="secondary"
+                          onClick={() => setPage(page + 1)}
+                          disabled={!hasNextPage}
+                        >
+                          <CaretRightIcon className="w-4 h-4" />
+                        </Button>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>Next Page ({page})</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                </div>
               </div>
             </div>
             <div className="flex items-center justify-around py-4">
@@ -220,30 +269,14 @@ export const AnimeExplore = () => {
                 )}
               </TabsContent>
               <TabsContent value="search">
-                {debouncedValue !== "" && data?.results.length !== 0 && (
-                  <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-4">
-                    {data?.results.map((anime) => (
-                      <ExploreCard
-                        key={anime.id}
-                        id={anime.id}
-                        title={anime.title}
-                        image={anime.image}
-                        subOrDub={anime.subOrDub}
-                        type="anime"
-                      />
-                    ))}
-                  </div>
-                )}
-                {isLoading && debouncedValue !== "" && <ExploreSkeleton />}
-                {debouncedValue !== "" &&
-                  data?.results.length === 0 &&
-                  !isLoading && (
-                    <div className="text-center w-full">
-                      <h4 className="text-lg font-semibold">
-                        No results found for {debouncedValue}
-                      </h4>
-                    </div>
-                  )}
+                <SearchTab
+                  debouncedValue={debouncedValue}
+                  page={page}
+                  setHasNextPage={setHasNextPage}
+                />
+              </TabsContent>
+              <TabsContent value="popular">
+                <PopularTab page={page} setHasNextPage={setHasNextPage} />
               </TabsContent>
             </div>
           </div>

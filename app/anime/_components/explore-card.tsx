@@ -14,6 +14,7 @@ interface ExploreCardProps {
   title: string;
   genres?: string[];
   episodeNumber?: number;
+  releaseDate?: string;
   episodeUrl?: string;
   type: "anime" | "manga" | "movie" | "episode";
 }
@@ -27,6 +28,7 @@ export const ExploreCard = ({
   genres,
   episodeNumber,
   episodeUrl,
+  releaseDate,
   type,
 }: ExploreCardProps) => {
   const router = useRouter();
@@ -57,11 +59,16 @@ export const ExploreCard = ({
         className="object-cover"
       />
       <Badge className="absolute top-4 left-4 bg-yellow-300 rounded-full text-black hover:bg-yellow-300">
-        {episodeNumber ? "New" : "Trending"}
+        {episodeNumber ? "New" : releaseDate ? "Hot" : "Trending"}
       </Badge>
       {episodeNumber && (
         <Badge className="bg-slate-900/50 absolute right-4 top-4 text-white">
           {episodeNumber} Episodes
+        </Badge>
+      )}
+      {releaseDate && (
+        <Badge className="bg-slate-900/50 absolute right-4 top-4 text-white">
+          {releaseDate}
         </Badge>
       )}
       {subOrDub && (

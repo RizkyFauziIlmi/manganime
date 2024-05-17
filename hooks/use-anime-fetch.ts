@@ -6,6 +6,7 @@ import {
   AnimeTopAiringData,
   AnimeServersAvailableData,
   AnimeStreamLinksData,
+  AnimePopularData,
 } from "@/types";
 import { useQuery } from "@tanstack/react-query";
 
@@ -51,5 +52,12 @@ export const useStreamLinks = (
   return useQuery<AnimeStreamLinksData>({
     queryKey: ["animeStreamLinks", episodeId, server],
     queryFn: () => animeService.getStreamLinks(episodeId, server),
+  });
+};
+
+export const usePopularAnime = (page?: number) => {
+  return useQuery<AnimePopularData>({
+    queryKey: ["popularAnime", page],
+    queryFn: () => animeService.getPopularAnime(page),
   });
 };

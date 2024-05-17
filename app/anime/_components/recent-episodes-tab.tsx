@@ -17,10 +17,8 @@ export const RecentEpisodesTab = ({
   const { data, isLoading } = useRecentEpisodes(page, type);
 
   React.useEffect(() => {
-    if (data?.results.length === 0) {
-      setHasNextPage(false);
-    } else {
-      setHasNextPage(true);
+    if (data?.hasNextPage) {
+      setHasNextPage(data.hasNextPage);
     }
   }, [data, setHasNextPage]);
 
