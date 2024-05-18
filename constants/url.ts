@@ -1,4 +1,7 @@
-export const baseUrl = new URL("/", "http://0.0.0.0:3000");
+export const baseUrl = new URL(
+  "/",
+  process.env.NEXT_PUBLIC_API_URL ?? "http://0.0.0.0:3000",
+);
 export const serviceUrl = {
   BASE_ANIME_URL: baseUrl.origin + "/anime/gogoanime",
   BASE_MANGA_URL: baseUrl.origin + "/manga/mangadex",

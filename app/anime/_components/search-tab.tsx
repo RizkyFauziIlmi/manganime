@@ -33,6 +33,7 @@ export const SearchTab = ({
               title={anime.title}
               image={anime.image}
               subOrDub={anime.subOrDub}
+              searchString={debouncedValue}
               type="anime"
             />
           ))}
