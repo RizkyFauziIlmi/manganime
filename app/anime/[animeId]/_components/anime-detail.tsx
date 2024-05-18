@@ -45,9 +45,12 @@ export const AnimeDetail = ({ data }: AnimeDetailProps) => {
   const isAutoFoward = useBoolean(false);
   const { episodeData, setData } = useEpisodeStore();
   const [videoUrl, setVideoUrl] = React.useState("");
+  const [videoTimestamp, setVideoTimestamp] = React.useState(0);
   const streamlinks = useStreamLinks(episodeData.id, value);
+  const videoRef = React.useRef<ReactPlayer>(null);
 
   React.useEffect(() => {
+    // set first episode when episodeData.id is empty
     if (episodeData.id === "") {
       setData({
         id: data.episodes[0].id,
@@ -58,8 +61,14 @@ export const AnimeDetail = ({ data }: AnimeDetailProps) => {
   }, [setData, data.episodes, episodeData.id]);
 
   React.useEffect(() => {
+    // set video url when variable changes
     setVideoUrl(streamlinks.data?.sources[resolutionIndex].url as string);
-  }, [episodeData, streamlinks, resolutionIndex, toast]);
+  }, [streamlinks, resolutionIndex]);
+
+  // reset video timestamp when episode changes
+  React.useEffect(() => {
+    setVideoTimestamp(0);
+  }, [episodeData.id]);
 
   const handleAutoFoward = () => {
     const isLastVideo = data.episodes.length === episodeData.number;
@@ -84,12 +93,15 @@ export const AnimeDetail = ({ data }: AnimeDetailProps) => {
           )}
         >
           <ReactPlayer
+            ref={videoRef}
             url={videoUrl}
             controls
             playing
             width="100%"
             height="100%"
             onEnded={handleAutoFoward}
+            onReady={() => videoRef.current?.seekTo(videoTimestamp)}
+            stopOnUnmount
           />
         </div>
       )}
@@ -143,6 +155,9 @@ export const AnimeDetail = ({ data }: AnimeDetailProps) => {
                 onClick={() => {
                   setResolutionIndex(index);
                   setVideoUrl(source.url);
+                  setVideoTimestamp(
+                    videoRef.current?.getCurrentTime() as number,
+                  );
                 }}
                 className={cn(
                   index === resolutionIndex &&
