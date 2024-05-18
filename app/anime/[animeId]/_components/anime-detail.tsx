@@ -70,6 +70,16 @@ export const AnimeDetail = ({ data }: AnimeDetailProps) => {
     setVideoTimestamp(0);
   }, [episodeData.id]);
 
+  // toast when animeData.id is changed
+  React.useEffect(() => {
+    if (episodeData.id !== "") {
+      toast({
+        title: "Now Watching",
+        description: `Now watching episode ${episodeData.number}`,
+      });
+    }
+  }, [episodeData, toast]);
+
   const handleAutoFoward = () => {
     const isLastVideo = data.episodes.length === episodeData.number;
     if (isAutoFoward.value && !isLastVideo) {
