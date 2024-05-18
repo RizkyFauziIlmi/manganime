@@ -1,13 +1,14 @@
 import { animeService } from "@/services/animeService";
 import { HomeBanner } from "./_components/home-banner";
 import { AnimeExplore } from "./_components/anime-explore";
+import { AnimeGenre } from "./_components/anime-genre";
 
 export default async function AnimePage() {
   const topAiringAnime = await animeService.getTopAiringAnimes(1);
 
   for (let i = 0; i < topAiringAnime.results.length; i++) {
     const animeInfo = await animeService.getAnimeInfo(
-      topAiringAnime.results[i].id
+      topAiringAnime.results[i].id,
     );
 
     topAiringAnime.results[i].description = animeInfo.description;
@@ -17,6 +18,7 @@ export default async function AnimePage() {
     <>
       <HomeBanner data={topAiringAnime} />
       <AnimeExplore />
+      <AnimeGenre />
     </>
   );
 }

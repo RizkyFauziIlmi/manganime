@@ -64,7 +64,11 @@ export const AnimeDetail = ({ data }: AnimeDetailProps) => {
   const handleAutoFoward = () => {
     const isLastVideo = data.episodes.length === episodeData.number;
     if (isAutoFoward.value && !isLastVideo) {
-      setData(data.episodes[episodeData.number]);
+      setData(
+        data.episodes[
+          episodeData.number === 0 ? episodeData.number + 1 : episodeData.number
+        ],
+      );
     }
   };
 

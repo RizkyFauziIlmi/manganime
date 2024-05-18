@@ -91,14 +91,15 @@ export const AnimeExplore = () => {
                   </div>
                   <TabsList>
                     <TabsTrigger value="top-airing">
-                      <StarFilledIcon className="w-4 h-4 mr-2" /> Top Airing
+                      <RocketIcon className="w-4 h-4 mr-2" />
+                      Top Airing
                     </TabsTrigger>
                     <TabsTrigger value="recent-episodes">
                       <CountdownTimerIcon className="w-4 h-4 mr-2" /> Recent
                       Episodes
                     </TabsTrigger>
                     <TabsTrigger value="popular">
-                      <RocketIcon className="w-4 h-4 mr-2" />
+                      <StarFilledIcon className="w-4 h-4 mr-2" />
                       Popular
                     </TabsTrigger>
                   </TabsList>

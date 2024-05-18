@@ -14,6 +14,7 @@ interface ExploreCardProps {
   title: string;
   genres?: string[];
   episodeNumber?: number;
+  searchString?: string;
   releaseDate?: string;
   episodeUrl?: string;
   type: "anime" | "manga" | "movie" | "episode";
@@ -29,10 +30,25 @@ export const ExploreCard = ({
   episodeNumber,
   episodeUrl,
   releaseDate,
+  searchString,
   type,
 }: ExploreCardProps) => {
   const router = useRouter();
   const { setData } = useEpisodeStore();
+
+  const highlightMatch = (text: string) => {
+    if (!searchString) return text;
+    const regex = new RegExp(`(${searchString})`, "gi");
+    return text.split(regex).map((part, index) => {
+      return regex.test(part) ? (
+        <span key={index} className="text-yellow-500">
+          {part}
+        </span>
+      ) : (
+        part
+      );
+    });
+  };
 
   const url = `/${type === "episode" ? "anime" : type}/${id}`;
 
@@ -78,7 +94,7 @@ export const ExploreCard = ({
       )}
       <div className="absolute bottom-0 left-0 right-0 p-4 text-center z-50">
         <small className="text-sm font-bold leading-none line-clamp-1 rounded-sm text-white group-hover:text-orange-400">
-          {title}
+          {highlightMatch(title)}
         </small>
         {genres && (
           <div

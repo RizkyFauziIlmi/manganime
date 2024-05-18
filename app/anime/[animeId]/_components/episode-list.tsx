@@ -44,9 +44,18 @@ export const EpisodeList = ({ data }: EpisodeListProps) => {
           <Button
             size="icon"
             variant="outline"
-            disabled={episodeData.number === 1}
+            disabled={
+              data.episodes[0].number === 0
+                ? episodeData.number === 0
+                : episodeData.number === 1
+            }
             onClick={() => {
-              const episodeElement = data.episodes[episodeData.number - 2];
+              const episodeElement =
+                data.episodes[
+                  data.episodes[0].number === 0
+                    ? episodeData.number - 1
+                    : episodeData.number - 2
+                ];
               setData({
                 id: episodeElement.id,
                 number: episodeElement.number,
@@ -60,7 +69,12 @@ export const EpisodeList = ({ data }: EpisodeListProps) => {
             defaultValue={episodeData.number.toString()}
             value={episodeData.number.toString()}
             onValueChange={(value) => {
-              const episodeElement = data.episodes[parseInt(value) - 1];
+              const episodeElement =
+                data.episodes[
+                  data.episodes[0].number === 0
+                    ? parseInt(value)
+                    : parseInt(value) - 1
+                ];
               setData({
                 id: episodeElement.id,
                 number: episodeElement.number,
@@ -82,9 +96,14 @@ export const EpisodeList = ({ data }: EpisodeListProps) => {
           <Button
             size="icon"
             variant="outline"
-            disabled={data.episodes.length === episodeData.number}
+            disabled={data.episodes.slice(-1)[0].number === episodeData.number}
             onClick={() => {
-              const episodeElement = data.episodes[episodeData.number];
+              const episodeElement =
+                data.episodes[
+                  data.episodes[0].number === 0
+                    ? episodeData.number + 1
+                    : episodeData.number
+                ];
               setData({
                 id: episodeElement.id,
                 number: episodeElement.number,

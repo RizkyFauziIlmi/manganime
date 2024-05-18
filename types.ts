@@ -54,11 +54,32 @@ export type AnimePopularData = {
   results: PopularAnime[];
 };
 
-export type PopularAnime = {
+type PopularAnime = {
   id: string;
   title: string;
   releaseDate: string;
   image: string;
+  url: string;
+};
+
+export type GenreListData = Genre[];
+
+type Genre = {
+  id: string;
+  title: string;
+};
+
+export type AnimeByGenreData = {
+  currentPage: number;
+  hasNextPage: boolean;
+  results: GenreAnime[];
+};
+
+type GenreAnime = {
+  id: string;
+  title: string;
+  image: string;
+  released: string;
   url: string;
 };
 

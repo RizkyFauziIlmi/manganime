@@ -1,5 +1,6 @@
 import { serviceUrl } from "@/constants/url";
 import {
+  AnimeByGenreData,
   AnimeInfoData,
   AnimePopularData,
   AnimeRecentEpisodesData,
@@ -7,6 +8,7 @@ import {
   AnimeServersAvailableData,
   AnimeStreamLinksData,
   AnimeTopAiringData,
+  GenreListData,
 } from "@/types";
 import qs from "qs";
 
@@ -146,5 +148,43 @@ export const animeService = {
     data.currentPage = parseInt(data.currentPage);
 
     return data as AnimePopularData;
+  },
+  getGenreList: async () => {
+    // ege: /genre/list
+    const url = baseUrl + `/genre/list`;
+
+    const response = await fetch(url);
+
+    if (response.status === 404) {
+      throw new Error("Servers not found");
+    } else if (response.status === 500) {
+      throw new Error("Internal server error");
+    }
+
+    const data = await response.json();
+
+    data.currentPage = parseInt(data.currentPage);
+
+    return data as GenreListData;
+  },
+  getAnimeByGenre: async (genreId: string, page?: number) => {
+    const url =
+      baseUrl +
+      `/genre/${genreId}` +
+      qs.stringify({ page }, { addQueryPrefix: true });
+
+    const response = await fetch(url);
+
+    if (response.status === 404) {
+      throw new Error("Servers not found");
+    } else if (response.status === 500) {
+      throw new Error("Internal server error");
+    }
+
+    const data = await response.json();
+
+    data.currentPage = parseInt(data.currentPage);
+
+    return data as AnimeByGenreData;
   },
 };
