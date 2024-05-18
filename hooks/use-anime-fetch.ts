@@ -7,6 +7,8 @@ import {
   AnimeServersAvailableData,
   AnimeStreamLinksData,
   AnimePopularData,
+  GenreListData,
+  AnimeByGenreData,
 } from "@/types";
 import { useQuery } from "@tanstack/react-query";
 
@@ -59,5 +61,19 @@ export const usePopularAnime = (page?: number) => {
   return useQuery<AnimePopularData>({
     queryKey: ["popularAnime", page],
     queryFn: () => animeService.getPopularAnime(page),
+  });
+};
+
+export const useGenreList = () => {
+  return useQuery<GenreListData>({
+    queryKey: ["genreList"],
+    queryFn: () => animeService.getGenreList(),
+  });
+};
+
+export const useAnimeByGenre = (genre: string, page?: number) => {
+  return useQuery<AnimeByGenreData>({
+    queryKey: ["animeByGenre", genre, page],
+    queryFn: () => animeService.getAnimeByGenre(genre, page),
   });
 };

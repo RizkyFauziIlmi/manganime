@@ -25,7 +25,7 @@ export const RecentEpisodesTab = ({
   if (isLoading) return <ExploreSkeleton />;
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-4">
+    <div className="flex flex-wrap gap-4 justify-center">
       {data?.results.map((episode) => (
         <ExploreCard
           key={episode.episodeId}
