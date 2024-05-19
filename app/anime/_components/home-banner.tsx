@@ -84,7 +84,7 @@ export const HomeBanner = ({ data }: HomeBannerProps) => {
                       <span
                         className={cn(
                           isDark ? "text-blue-300" : "text-blue-500",
-                          "pr-2",
+                          "pr-2"
                         )}
                       >
                         Genre:{" "}
@@ -92,7 +92,11 @@ export const HomeBanner = ({ data }: HomeBannerProps) => {
                       <div className="gap-1 flex md:flex-nowrap flex-wrap">
                         {value.genres.map((genre, index) => (
                           <>
-                            {index === 0 ? " " : <span>&bull;</span>}
+                            {index === 0 ? (
+                              " "
+                            ) : (
+                              <span key={genre}>&bull;</span>
+                            )}
                             <span key={genre}>{genre}</span>
                           </>
                         ))}
@@ -118,10 +122,10 @@ export const HomeBanner = ({ data }: HomeBannerProps) => {
       <div className="py-2 text-center space-x-[3px] text-muted-foreground">
         {Array.from({ length: count }).map((_, index) => (
           <span
-            key={"span_in_ap" + index}
+            key={index}
             className={cn(
               index === current - 1 ? "text-primary" : "",
-              "text-xl cursor-pointer",
+              "text-xl cursor-pointer"
             )}
             onClick={() => api?.scrollTo(index)}
           >
