@@ -65,12 +65,8 @@ export const AnimeDetail = ({ data }: AnimeDetailProps) => {
 
   useEffect(() => {
     // set first episode when episodeData.id is empty
-    if (episodeData.id === "") {
-      setData({
-        id: data.episodes[0].id,
-        number: data.episodes[0].number,
-        url: data.episodes[0].url,
-      });
+    if (!episodeData.id) {
+      setData(data.episodes[0]);
     }
   }, [setData, data.episodes, episodeData.id]);
 
@@ -84,9 +80,9 @@ export const AnimeDetail = ({ data }: AnimeDetailProps) => {
     setVideoTimestamp(0);
   }, [episodeData.id, setVideoTimestamp]);
 
-  // toast when animeData.id is changed
+  // toast when animeData is changed
   useEffect(() => {
-    if (episodeData.id !== "") {
+    if (episodeData) {
       toast({
         title: "Now Watching",
         description: `Now watching episode ${episodeData.number}`,
@@ -99,7 +95,7 @@ export const AnimeDetail = ({ data }: AnimeDetailProps) => {
     toast({
       title: isOn ? "Auto Resolution Active" : "Auto Resolution Inactive",
       description: isOn
-        ? `resolution will adjust according to internet speed every ${prettyMilliseconds(testInterval)}`
+        ? `resolution will adjust according to internet speed every ${prettyMilliseconds(testInterval, { verbose: true })}`
         : "resolution will would't adjust according to internet speed",
     });
   }, [isOn, testInterval, toast]);
@@ -121,13 +117,13 @@ export const AnimeDetail = ({ data }: AnimeDetailProps) => {
   }, [rsIndex, isOn]);
 
   const handleAutoFoward = () => {
-    const isLastVideo = data.episodes.length === episodeData.number;
+    const isLastVideo = data.episodes[data.episodes.length - 1] === episodeData;
     if (isAutoFoward.value && !isLastVideo) {
-      setData(
-        data.episodes[
-          episodeData.number === 0 ? episodeData.number + 1 : episodeData.number
-        ],
+      const currentEpisodeIndex = data.episodes.findIndex(
+        (episode) => episode.id === episodeData.id,
       );
+      const nextEpisode = data.episodes[currentEpisodeIndex + 1];
+      setData(nextEpisode);
     }
   };
 

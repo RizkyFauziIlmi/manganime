@@ -17,12 +17,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useToast } from "@/components/ui/use-toast";
 
 interface EpisodeListProps {
   data: AnimeInfoData;
 }
 
 export const EpisodeList = ({ data }: EpisodeListProps) => {
+  const { toast } = useToast();
   const { episodeData, setData } = useEpisodeStore();
 
   return (
@@ -44,42 +46,36 @@ export const EpisodeList = ({ data }: EpisodeListProps) => {
           <Button
             size="icon"
             variant="outline"
-            disabled={
-              data.episodes[0].number === 0
-                ? episodeData.number === 0
-                : episodeData.number === 1
-            }
+            disabled={data.episodes[0] === episodeData}
             onClick={() => {
-              const episodeElement =
-                data.episodes[
-                  data.episodes[0].number === 0
-                    ? episodeData.number - 1
-                    : episodeData.number - 2
-                ];
-              setData({
-                id: episodeElement.id,
-                number: episodeElement.number,
-                url: episodeElement.url,
-              });
+              const currentIndex = data.episodes.findIndex(
+                (episode) => episode.id === episodeData.id,
+              );
+              const prevIndex = currentIndex - 1;
+              const prevEpisode = data.episodes[prevIndex];
+              if (!prevEpisode) return;
+              setData(prevEpisode);
             }}
           >
             <ChevronLeftIcon className="w-4 h-4" />
           </Button>
           <Select
-            defaultValue={episodeData.number.toString()}
-            value={episodeData.number.toString()}
+            disabled={!data}
+            defaultValue={episodeData.id}
+            value={episodeData.id}
             onValueChange={(value) => {
-              const episodeElement =
-                data.episodes[
-                  data.episodes[0].number === 0
-                    ? parseInt(value)
-                    : parseInt(value) - 1
-                ];
-              setData({
-                id: episodeElement.id,
-                number: episodeElement.number,
-                url: episodeElement.url,
-              });
+              const episodeTarget = data.episodes.find(
+                (episode) => episode.id === value,
+              );
+              if (!episodeTarget) {
+                toast({
+                  title: "Episode not found",
+                  description: "Please select a valid episode",
+                  variant: "destructive",
+                });
+                return;
+              }
+              setData(episodeTarget);
             }}
           >
             <SelectTrigger className="w-[180px]">
@@ -87,7 +83,7 @@ export const EpisodeList = ({ data }: EpisodeListProps) => {
             </SelectTrigger>
             <SelectContent>
               {data.episodes.map((episode) => (
-                <SelectItem key={episode.id} value={episode.number.toString()}>
+                <SelectItem key={episode.id} value={episode.id}>
                   Episode {episode.number}
                 </SelectItem>
               ))}
@@ -96,19 +92,17 @@ export const EpisodeList = ({ data }: EpisodeListProps) => {
           <Button
             size="icon"
             variant="outline"
-            disabled={data.episodes.slice(-1)[0].number === episodeData.number}
+            disabled={
+              data.episodes[data.episodes.length - 1].id === episodeData.id
+            }
             onClick={() => {
-              const episodeElement =
-                data.episodes[
-                  data.episodes[0].number === 0
-                    ? episodeData.number + 1
-                    : episodeData.number
-                ];
-              setData({
-                id: episodeElement.id,
-                number: episodeElement.number,
-                url: episodeElement.url,
-              });
+              const currentIndex = data.episodes.findIndex(
+                (episode) => episode.id === episodeData.id,
+              );
+              const nextIndex = currentIndex + 1;
+              const nextEpisode = data.episodes[nextIndex];
+              if (!nextEpisode) return;
+              setData(nextEpisode);
             }}
           >
             <ChevronRightIcon className="w-4 h-4" />

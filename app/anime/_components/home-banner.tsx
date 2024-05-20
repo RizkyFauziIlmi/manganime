@@ -16,6 +16,7 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { useTheme } from "next-themes";
+import { v4 as uuidv4 } from "uuid";
 
 interface HomeBannerProps {
   data: AnimeTopAiringData;
@@ -57,8 +58,8 @@ export const HomeBanner = ({ data }: HomeBannerProps) => {
         opts={{ align: "center", loop: true }}
       >
         <CarouselContent>
-          {data.results.map((value) => (
-            <CarouselItem key={value.id}>
+          {data.results.map((value, index) => (
+            <CarouselItem key={uuidv4()}>
               <Card className="relative h-[60vh] overflow-hidden rounded-3xl group">
                 <div className="absolute inset-0 bg-gradient-to-r from-black via-black/80 to-transparent z-40"></div>
                 <Image
@@ -84,20 +85,20 @@ export const HomeBanner = ({ data }: HomeBannerProps) => {
                       <span
                         className={cn(
                           isDark ? "text-blue-300" : "text-blue-500",
-                          "pr-2"
+                          "pr-2",
                         )}
                       >
                         Genre:{" "}
                       </span>
                       <div className="gap-1 flex md:flex-nowrap flex-wrap">
-                        {value.genres.map((genre, index) => (
+                        {value.genres.map((genre) => (
                           <>
                             {index === 0 ? (
                               " "
                             ) : (
-                              <span key={genre}>&bull;</span>
+                              <span key={uuidv4()}>&bull;</span>
                             )}
-                            <span key={genre}>{genre}</span>
+                            <span key={uuidv4()}>{genre}</span>
                           </>
                         ))}
                       </div>
@@ -122,10 +123,10 @@ export const HomeBanner = ({ data }: HomeBannerProps) => {
       <div className="py-2 text-center space-x-[3px] text-muted-foreground">
         {Array.from({ length: count }).map((_, index) => (
           <span
-            key={index}
+            key={uuidv4()}
             className={cn(
               index === current - 1 ? "text-primary" : "",
-              "text-xl cursor-pointer"
+              "text-xl cursor-pointer",
             )}
             onClick={() => api?.scrollTo(index)}
           >
