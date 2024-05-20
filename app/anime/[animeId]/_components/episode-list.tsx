@@ -27,10 +27,6 @@ export const EpisodeList = ({ data }: EpisodeListProps) => {
   const { toast } = useToast();
   const { episodeData, setData } = useEpisodeStore();
 
-  const currentEpisode = data.episodes.find(
-    (episode) => episode.id === episodeData.id,
-  );
-
   return (
     <div className="bg-background py-4 border-[0.1px] border-primary/20 rounded-lg max-h-screen overflow-auto">
       <div className="flex flex-col gap-2">
