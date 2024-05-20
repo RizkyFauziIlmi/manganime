@@ -59,36 +59,36 @@ export const EpisodeList = ({ data }: EpisodeListProps) => {
           >
             <ChevronLeftIcon className="w-4 h-4" />
           </Button>
-          <Select
-            disabled={!data}
-            defaultValue={episodeData.id}
-            value={episodeData.id}
-            onValueChange={(value) => {
-              const episodeTarget = data.episodes.find(
-                (episode) => episode.id === value,
-              );
-              if (!episodeTarget) {
-                toast({
-                  title: "Episode not found",
-                  description: "Please select a valid episode",
-                  variant: "destructive",
-                });
-                return;
-              }
-              setData(episodeTarget);
-            }}
-          >
-            <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Choose Episode..." />
-            </SelectTrigger>
-            <SelectContent>
-              {data.episodes.map((episode) => (
-                <SelectItem key={episode.id} value={episode.id}>
-                  Episode {episode.number}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+          {episodeData.id && (
+            <Select
+              defaultValue={episodeData.id}
+              onValueChange={(value) => {
+                const episodeTarget = data.episodes.find(
+                  (episode) => episode.id === value,
+                );
+                if (!episodeTarget) {
+                  toast({
+                    title: "Episode not found",
+                    description: "Please select a valid episode",
+                    variant: "destructive",
+                  });
+                  return;
+                }
+                setData(episodeTarget);
+              }}
+            >
+              <SelectTrigger className="w-[180px]">
+                <SelectValue placeholder="Choose Episode..." />
+              </SelectTrigger>
+              <SelectContent>
+                {data.episodes.map((episode) => (
+                  <SelectItem key={episode.id} value={episode.id}>
+                    Episode {episode.number}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          )}
           <Button
             size="icon"
             variant="outline"
