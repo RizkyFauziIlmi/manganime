@@ -251,7 +251,7 @@ export const AnimeDetail = ({ data }: AnimeDetailProps) => {
           onCheckedChange={(value) => isAutoFoward.setValue(value)}
         />
       </div>
-      <div className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm">
+      <div className="flex flex-col gap-3 md:gap-0 md:flex-row items-center justify-between rounded-lg border p-3 shadow-sm">
         <div className="space-y-0.5">
           <p className="font-semibold text-sm flex gap-2">
             Auto Resolution
@@ -288,13 +288,13 @@ export const AnimeDetail = ({ data }: AnimeDetailProps) => {
             The video resolution will adjust according to internet speed
           </p>
         </div>
-        <div className="flex items-center gap-2 ">
+        <div className="flex items-center md:w-fit w-full gap-2 ">
           <Select
             onValueChange={(value) => setTestInterval(parseInt(value))}
             value={testInterval.toString()}
             disabled={!isOn}
           >
-            <SelectTrigger className="w-[180px]">
+            <SelectTrigger className="md:w-[180px]">
               <SelectValue placeholder="Testing Interval" />
             </SelectTrigger>
             <SelectContent>
