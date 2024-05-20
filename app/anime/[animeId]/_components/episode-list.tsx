@@ -61,7 +61,7 @@ export const EpisodeList = ({ data }: EpisodeListProps) => {
           </Button>
           {episodeData.id && (
             <Select
-              defaultValue={episodeData.id}
+              value={episodeData.id}
               onValueChange={(value) => {
                 const episodeTarget = data.episodes.find(
                   (episode) => episode.id === value,
