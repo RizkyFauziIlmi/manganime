@@ -58,9 +58,13 @@ export const ExploreCard = ({
       onClick={() => {
         if (type === "episode") {
           setData({
-            id: episodeId as string,
-            number: episodeNumber as number,
-            url: episodeUrl as string,
+            id: (episodeId as string) ?? "",
+            number: (episodeNumber as number) ?? "",
+            url:
+              (episodeUrl?.replace(
+                "https://gogoanime3.co/",
+                "https://gogoanime3.co//",
+              ) as string) ?? "",
           });
         }
         router.push(url);
@@ -103,8 +107,8 @@ export const ExploreCard = ({
               "flex h-6 gap-2 overflow-auto mt-2",
             )}
           >
-            {genres.map((genre) => (
-              <Badge key={genre} variant="secondary" className="text-xs">
+            {genres.map((genre, index) => (
+              <Badge key={index} variant="secondary" className="text-xs">
                 {genre}
               </Badge>
             ))}

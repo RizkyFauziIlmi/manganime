@@ -66,9 +66,9 @@ export const AnimeGenre = () => {
               <CommandInput placeholder="Search Genre..." />
               <CommandEmpty>No genre found.</CommandEmpty>
               <CommandGroup className="max-h-96 overflow-auto">
-                {genreList?.data?.map((genre) => (
+                {genreList?.data?.map((genre, index) => (
                   <CommandItem
-                    key={genre.id}
+                    key={index}
                     value={genre.id}
                     onSelect={(currentValue) => {
                       setValue(currentValue === value ? "" : currentValue);
@@ -126,10 +126,10 @@ export const AnimeGenre = () => {
         </div>
       </div>
       <div className="flex gap-4 flex-wrap justify-center p-4">
-        {animesByGenre?.data?.results.map((anime) => (
+        {animesByGenre?.data?.results.map((anime, index) => (
           <ExploreCard
             id={anime.id}
-            key={anime.id}
+            key={index}
             image={anime.image}
             releaseDate={anime.released}
             title={anime.title}
